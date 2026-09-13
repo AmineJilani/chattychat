@@ -1,0 +1,149 @@
+<!-- chat-invitations.html -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Invitations du chat</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body>
+
+<div class="admin-page">
+
+    <header class="admin-header">
+
+        <div class="admin-profile">
+            <div class="avatar"></div>
+            <div>
+                <div class="profile-name"
+                     th:text="${adminUser.nom + ' ' + adminUser.prenom}">
+                    Admin Name
+                </div>
+                <div class="profile-role">Role : Admin</div>
+            </div>
+        </div>
+
+        <div class="admin-title">CHATTYCHAT</div>
+
+        <div class="header-menu">
+            <a href="/admin">Accueil</a>
+            <a href="/admin/chats">Retour chats</a>
+            <a href="/admin/infos">Mes Infos</a>
+            <a href="/admin/logout">Déconnexion</a>
+        </div>
+
+    </header>
+
+    <main class="content">
+
+        <div class="details-box">
+
+            <h1>Gestion des invitations</h1>
+
+            <p>
+                <strong>Chat :</strong>
+                <span th:text="${chat.titre}"></span>
+            </p>
+
+            <p>
+                <strong>Description :</strong>
+                <span th:text="${chat.description}"></span>
+            </p>
+
+            <p>
+                <strong>Propriétaire :</strong>
+                <span th:text="${chat.proprietaire.nom + ' ' + chat.proprietaire.prenom}"></span>
+            </p>
+
+        </div>
+
+        <div class="details-box">
+
+            <h2>Ajouter des invités</h2>
+
+           <form method="post"
+		      th:action="@{/admin/chats/{id}/invite(id=${chat.id})}"
+		      onsubmit="return checkSelection()">
+		
+		    <div class="input-group">
+		        <label for="userIdsSelect">
+		            Utilisateurs à inviter
+		            <span class="hint">(Ctrl/Cmd + clic pour en sélectionner plusieurs)</span>
+		        </label>
+		
+		        <select id="userIdsSelect"
+		                name="userIds"
+		                multiple
+		                size="8"
+		                class="multi-select">
+		
+		            <option th:each="user : ${users}"
+		                    th:if="${user.actif and user.id != chat.proprietaire.id}"
+		                    th:value="${user.id}"
+		                    th:text="${user.nom + ' ' + user.prenom + ' - ' + user.email}">
+		            </option>
+		
+		        </select>
+		    </div>
+		
+		    <button class="login-btn" type="submit">
+		        Ajouter les invitations
+		    </button>
+		
+		</form>
+		
+		<script>
+		function checkSelection() {
+		    const select = document.getElementById("userIdsSelect");
+		
+		    if (select.selectedOptions.length === 0) {
+		        alert("Sélectionnez au moins un utilisateur à inviter.");
+		        return false; // bloque l'envoi du formulaire
+		    }
+		
+		    return true; // autorise l'envoi
+		}
+		</script>
+
+        </div>
+
+        <h2>Liste des invités</h2>
+
+        <div th:if="${#lists.isEmpty(invitations)}" class="details-box">
+            Aucun utilisateur invité pour ce chat.
+        </div>
+
+        <table th:if="${!#lists.isEmpty(invitations)}" class="chat-table">
+
+            <tr>
+                <th>Nom</th>
+                <th>Prénom</th>
+                <th>Email</th>
+                <th>Statut invitation</th>
+                <th>Action</th>
+            </tr>
+
+            <tr th:each="invitation : ${invitations}">
+                <td th:text="${invitation.user.nom}"></td>
+                <td th:text="${invitation.user.prenom}"></td>
+                <td th:text="${invitation.user.email}"></td>
+                <td th:text="${invitation.statut}"></td>
+                <td>
+                    <a class="btn btn-danger"
+                       th:href="@{/admin/chats/invitation/delete/{id}(id=${invitation.id})}"
+                       onclick="return confirm('Retirer cette invitation ?')">
+                        Retirer
+                    </a>
+                </td>
+            </tr>
+
+        </table>
+
+    </main>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,91 @@
+<!-- disabled.html -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Comptes désactivés</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+<div class="admin-page">
+
+    <header class="admin-header">
+
+        <div class="admin-profile">
+            <div class="avatar"></div>
+            <div>
+                <div class="profile-name"
+                     th:text="${adminUser.nom + ' ' + adminUser.prenom}">
+                </div>
+                <div class="profile-role">Role : Admin</div>
+            </div>
+        </div>
+
+        <div class="admin-title">CHATTYCHAT</div>
+
+        <div class="header-menu">
+            <a href="/admin">Accueil</a>
+            <a href="/admin/users">Utilisateurs actifs</a>
+            <a href="/admin/logout">Déconnexion</a>
+        </div>
+
+    </header>
+
+    <main class="content">
+
+        <h1>Comptes désactivés</h1>
+
+        <div th:if="${users.empty}" class="details-box">
+            Aucun compte désactivé pour le moment.
+        </div>
+
+        <table th:if="${!users.empty}" class="chat-table">
+            <tr>
+                <th>Nom</th>
+                <th>Prénom</th>
+                <th>Email</th>
+                <th>Action</th>
+            </tr>
+
+            <tr th:each="user : ${users.content}">
+                <td th:text="${user.nom}"></td>
+                <td th:text="${user.prenom}"></td>
+                <td th:text="${user.email}"></td>
+                <td>
+                    <a class="btn"
+                       th:href="@{/admin/users/activate/{id}(id=${user.id})}"
+                       onclick="return confirm('Réactiver ce compte ?')">
+                        Réactiver
+                    </a>
+                </td>
+            </tr>
+        </table>
+
+        <div class="pagination" th:if="${users.totalPages > 1}">
+
+            <a th:if="${users.hasPrevious()}"
+               th:href="@{/admin/disabled(page=${users.number - 1})}">
+                Précédent
+            </a>
+
+            <span th:each="i : ${#numbers.sequence(0, users.totalPages - 1)}">
+                <a th:href="@{/admin/disabled(page=${i})}"
+                   th:text="${i + 1}"
+                   th:classappend="${i == users.number} ? 'active-page' : ''">
+                </a>
+            </span>
+
+            <a th:if="${users.hasNext()}"
+               th:href="@{/admin/disabled(page=${users.number + 1})}">
+                Suivant
+            </a>
+
+        </div>
+
+    </main>
+
+</div>
+
+</body>
+</html>

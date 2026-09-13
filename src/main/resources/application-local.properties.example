@@ -1,0 +1,7 @@
+# Copiez ce fichier en "application-local.properties" (ignore par git) et renseignez vos valeurs reelles.
+# Activez-le avec spring.profiles.active=local, ou definissez simplement la variable
+# d'environnement DB_PASSWORD utilisee par application.properties.
+
+spring.datasource.url=jdbc:mysql://localhost:3306/sr03_chatapp
+spring.datasource.username=root
+spring.datasource.password=

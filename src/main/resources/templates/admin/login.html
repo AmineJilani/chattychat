@@ -1,0 +1,95 @@
+<!-- login.html -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Connexion admin</title>
+
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body>
+
+<div class="auth-container">
+
+    <!-- LOGO -->
+    <div class="logo">
+        Ⓢ CHATTYCHAT
+    </div>
+
+    <!-- CARD LOGIN -->
+    <div class="login-card">
+
+        <h1>
+            Connexion Administrateur
+        </h1>
+
+        <p class="login-subtitle">
+            Connectez-vous pour gérer les utilisateurs
+            et les salons de discussion.
+        </p>
+
+        <!-- MESSAGE ERREUR -->
+        <div class="error-box"
+             th:if="${error}"
+             th:text="${error}">
+        </div>
+
+        <!-- FORMULAIRE -->
+        <form method="post" action="/admin/login">
+
+            <div class="input-group">
+
+                <label>Email</label>
+
+                <input type="email"
+                       name="email"
+                       placeholder="admin@chattychat.com"
+                       required>
+
+            </div>
+
+            <div class="input-group">
+
+                <label>Mot de passe</label>
+
+                <input type="password"
+                       name="password"
+                       placeholder="********"
+                       required
+                       minlength="12">
+
+            </div>
+
+            <button type="submit"
+                    class="login-btn">
+                Connexion
+            </button>
+
+        </form>
+
+        <div class="forgot-password">
+            <a href="#">
+                Mot de passe oublié ?
+            </a>
+        </div>
+
+    </div>
+
+    <!-- BULLE INFO -->
+    <div class="password-tip">
+
+        <h3>Sécurité</h3>
+
+        <p>
+            Après plusieurs tentatives incorrectes,
+            le compte administrateur sera temporairement bloqué.
+        </p>
+
+    </div>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,174 @@
+<!-- users.html -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Liste utilisateurs</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body>
+
+<div class="admin-page">
+
+    <header class="admin-header">
+
+        <div class="admin-profile">
+            <div class="avatar"></div>
+            <div>
+                <div class="profile-name"
+                     th:text="${adminUser.nom + ' ' + adminUser.prenom}">
+                    Admin Name
+                </div>
+                <div class="profile-role">Role : Admin</div>
+            </div>
+        </div>
+
+        <div class="admin-title">CHATTYCHAT</div>
+
+        <div class="header-menu">
+            <a href="/admin">Accueil</a>
+            <a href="/admin/users/new">Créer utilisateur</a>
+            <a href="/admin/logout">Déconnexion</a>
+        </div>
+
+    </header>
+
+    <div class="admin-layout">
+
+    <aside class="sidebar">
+
+    <h2>Filtrer</h2>
+
+    <div class="filter-section">
+        <h3>Statut</h3>
+		<button
+		    type="button"
+		    data-filter-status="all"
+		    onclick="applyFilters('all', currentRoleFilter)">
+		    Tous
+		</button>
+		
+		<button
+		    type="button"
+		    data-filter-status="active"
+		    onclick="applyFilters('active', currentRoleFilter)">
+		    Activés
+		</button>
+		
+		<button
+		    type="button"
+		    data-filter-status="disabled"
+		    onclick="applyFilters('disabled', currentRoleFilter)">
+		    Désactivés
+		</button>
+    </div>
+
+    <div class="filter-section">
+        <h3>Rôle</h3>
+		<button
+		    type="button"
+		    data-filter-role="all"
+		    onclick="applyFilters(currentStatusFilter, 'all')">
+		    Tous
+		</button>
+		
+		<button
+		    type="button"
+		    data-filter-role="admin"
+		    onclick="applyFilters(currentStatusFilter, 'admin')">
+		    Admin
+		</button>
+		
+		<button
+		    type="button"
+		    data-filter-role="user"
+		    onclick="applyFilters(currentStatusFilter, 'user')">
+		    Utilisateur
+		</button>
+    </div>
+
+</aside>
+        <main class="content">
+
+            <form method="get" action="/admin/users" class="search-form" id="searchForm">
+                <input
+    class="search-bar"
+    type="text"
+    id="searchInput"
+    name="keyword"
+    placeholder="Rechercher..."
+    th:value="${keyword}">
+            </form>
+
+            <div class="user-card"
+     th:each="user : ${users.content}"
+     th:attr="data-status=${user.actif ? 'active' : 'disabled'}, data-role=${user.admin ? 'admin' : 'user'}">
+
+    <div class="user-info">
+        <div class="avatar"></div>
+
+        <div>
+            <div th:text="${user.nom + ' ' + user.prenom}"></div>
+            <div>Email : <span th:text="${user.email}"></span></div>
+            <div>
+    Rôle :
+    <span th:text="${user.admin ? 'Admin' : 'Utilisateur'}"></span>
+	</div>
+            <div>Statut : <span th:text="${user.actif ? 'Activé' : 'Désactivé'}"></span></div>
+        </div>
+    </div>
+
+    <div class="user-actions">
+
+        <a class="btn"
+           th:href="@{/admin/users/details/{id}(id=${user.id})}">
+            Détails
+        </a>
+
+        <a class="btn"
+           th:href="@{/admin/users/edit-status/{id}(id=${user.id})}">
+            Modifier statut / rôle
+        </a>
+
+        <a class="btn btn-danger"
+           th:href="@{/admin/users/delete/{id}(id=${user.id})}"
+           onclick="return confirm('Supprimer ce compte ?')">
+            Supprimer le compte
+        </a>
+
+    </div>
+</div>
+
+            <div class="pagination" th:if="${users.totalPages > 1}">
+
+                <a th:if="${users.hasPrevious()}"
+                   th:href="@{/admin/users(page=${users.number - 1}, keyword=${keyword}, sort=${sort}, direction=${direction})}">
+                    Précédent
+                </a>
+
+                <span th:each="i : ${#numbers.sequence(0, users.totalPages - 1)}">
+                    <a th:href="@{/admin/users(page=${i}, keyword=${keyword}, sort=${sort}, direction=${direction})}"
+                       th:text="${i + 1}"
+                       th:classappend="${i == users.number} ? 'active-page' : ''">
+                    </a>
+                </span>
+
+                <a th:if="${users.hasNext()}"
+                   th:href="@{/admin/users(page=${users.number + 1}, keyword=${keyword}, sort=${sort}, direction=${direction})}">
+                    Suivant
+                </a>
+
+            </div>
+
+        </main>
+
+    </div>
+
+</div>
+
+<script th:src="@{/js/FilterUsers.js}"></script>
+
+</body>
+</html>

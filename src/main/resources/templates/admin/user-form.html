@@ -1,0 +1,113 @@
+<!-- user-form.html -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Créer utilisateur</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body>
+
+<div class="auth-container">
+
+    <div class="logo">Ⓢ CHATTYCHAT</div>
+
+    <div class="auth-box">
+
+        <h2 th:text="${user.id != null} ? 'Modifier un utilisateur' : 'Créer un utilisateur'">
+            Créer un utilisateur
+        </h2>
+
+        <form method="post" action="/admin/users/save" th:object="${user}">
+
+            <input type="hidden" th:field="*{id}">
+
+            <input type="text"
+                   th:field="*{nom}"
+                   placeholder="Nom *"
+                   required
+                   minlength="2"
+                   maxlength="50">
+            <p th:errors="*{nom}" class="error"></p>
+
+            <input type="text"
+                   th:field="*{prenom}"
+                   placeholder="Prénom *"
+                   required
+                   minlength="2"
+                   maxlength="50">
+            <p th:errors="*{prenom}" class="error"></p>
+
+            <input type="email"
+                   th:field="*{email}"
+                   placeholder="Email *"
+                   required
+                   maxlength="100">
+            <p th:errors="*{email}" class="error"></p>
+
+            <!-- MOT DE PASSE + BOUTON GÉNÉRER -->
+            <input type="password"
+                   id="password"
+                   th:field="*{password}"
+                   placeholder="Mot de passe *"
+                   required
+                   minlength="12">
+            <p th:errors="*{password}" class="error"></p>
+
+            <!-- BARRE DE FORCE -->
+            <div class="strength-bar-wrapper">
+                <div id="strengthBar" class="strength-bar-fill"></div>
+            </div>
+            <p id="strengthIndicator"></p>
+
+            <!-- CONFIRMATION MOT DE PASSE -->
+            <input type="password"
+                   id="confirmPassword"
+                   placeholder="Confirmer le mot de passe *"
+                   required
+                   minlength="12">
+            <p id="passwordMatchError"></p>
+            
+             <button type="button"
+                    class="small-btn"
+                    onclick="generatePassword()">
+                Générer
+            </button>
+
+            <!-- AFFICHER / MASQUER -->
+            <label class="show-password-line">
+                <input type="checkbox" onchange="!showPassword()">
+                Afficher les mots de passe
+            </label>
+
+            <label class="checkbox-line">
+                <input type="checkbox" th:field="*{admin}">
+                Administrateur
+            </label>
+
+            <br>
+
+            <button type="submit">Confirmer</button>
+
+        </form>
+
+        <br>
+
+		<button type="button" class="btn-back" onclick="window.location.href='/admin/users'">
+		    Retour liste utilisateurs
+		</button>
+    </div>
+
+    <div class="password-tip">
+        Le mot de passe doit contenir au moins 12 caractères,
+        avec majuscule, minuscule, chiffre et caractère spécial.
+    </div>
+
+</div>
+
+<script th:src="@{/js/password.js}"></script>
+
+</body>
+</html>

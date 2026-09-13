@@ -1,0 +1,73 @@
+<!-- chat-form.html -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title >Formulaire chat</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body>
+
+<div class="auth-container">
+
+    <div class="logo">Ⓢ CHATTYCHAT</div>
+
+    <div class="login-card">
+
+        <h1>Planifier un chat</h1>
+
+        <form method="post" action="/admin/chats/save" th:object="${chat}">
+
+            <input type="hidden" th:field="*{id}">
+
+            <div class="input-group">
+                <label>Titre</label>
+                <input type="text" th:field="*{titre}" required>
+            </div>
+
+            <div class="input-group">
+                <label>Description</label>
+                <input type="text" th:field="*{description}" required>
+            </div>
+
+            <div class="input-group">
+                <label>Date et heure</label>
+                <input type="datetime-local" th:field="*{dateCreation}" required>
+            </div>
+
+            <div class="input-group">
+                <label>Durée validité en minutes</label>
+                <input type="number" th:field="*{dureeValiditeMinutes}" min="1" required>
+            </div>
+
+            <div class="input-group">
+                <label>Propriétaire</label>
+                <select name="proprietaireId" required>
+                    <option value="">-- Choisir propriétaire --</option>
+
+                    <option th:each="user : ${users}"
+                            th:value="${user.id}"
+                            th:text="${user.nom + ' ' + user.prenom}"
+                            th:selected="${chat.proprietaire != null and chat.proprietaire.id == user.id}">
+                    </option>
+                </select>
+            </div>
+
+            <button class="login-btn" type="submit">
+                Enregistrer
+            </button>
+
+        </form>
+
+        <br>
+
+        <a class="back-link" href="/admin/chats">Retour</a>
+
+    </div>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,105 @@
+<!-- edit-status.html -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Modifier statut</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body>
+
+<div class="admin-page">
+
+    <header class="admin-header">
+
+        <div class="admin-profile">
+            <div class="avatar"></div>
+            <div>
+                <div class="profile-name"
+                     th:text="${adminUser.nom + ' ' + adminUser.prenom}">
+                </div>
+                <div class="profile-role">Role : Admin</div>
+            </div>
+        </div>
+
+        <div class="admin-title">CHATTYCHAT</div>
+
+        <div class="header-menu">
+            <a href="/admin/users">Retour</a>
+            <a href="/admin/logout">Déconnexion</a>
+        </div>
+
+    </header>
+
+    <main class="content">
+
+        <div class="details-box">
+
+            <h1>Modifier le statut du compte</h1>
+
+            <p>
+                <strong>Utilisateur :</strong>
+                <span th:text="${user.nom + ' ' + user.prenom}"></span>
+            </p>
+
+            <p>
+                <strong>Email :</strong>
+                <span th:text="${user.email}"></span>
+            </p>
+
+            <p>
+                <strong>Statut actuel :</strong>
+                <span th:text="${user.actif ? 'Activé' : 'Désactivé'}"></span>
+            </p>
+
+            <form method="post" action="/admin/users/update-status">
+
+    <input type="hidden" name="id" th:value="${user.id}">
+
+    <h2>Statut du compte</h2>
+
+    <label class="status-choice">
+        <input type="radio" name="actif" value="true" th:checked="${user.actif}">
+        Activer le compte
+    </label>
+
+    <br><br>
+
+    <label class="status-choice">
+        <input type="radio" name="actif" value="false" th:checked="${!user.actif}">
+        Désactiver le compte
+    </label>
+
+    <hr>
+
+    <h2>Rôle de l'utilisateur</h2>
+
+    <label class="status-choice">
+        <input type="radio" name="admin" value="false" th:checked="${!user.admin}">
+        Utilisateur basique
+    </label>
+
+    <br><br>
+
+    <label class="status-choice">
+        <input type="radio" name="admin" value="true" th:checked="${user.admin}">
+        Administrateur
+    </label>
+
+    <br><br>
+
+    <button class="login-btn" type="submit">
+        Enregistrer les modifications
+    </button>
+
+</form>
+        </div>
+
+    </main>
+
+</div>
+
+</body>
+</html>

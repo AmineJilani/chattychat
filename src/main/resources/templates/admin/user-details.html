@@ -1,0 +1,113 @@
+<!-- user-details.html -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Détails utilisateur</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+<div class="admin-page">
+
+    <header class="admin-header">
+        <div class="admin-profile">
+            <div class="avatar"></div>
+            <div>
+                <div class="profile-name"
+				     th:text="${adminUser.nom + ' ' + adminUser.prenom}">
+				</div>
+				<div class="profile-role">Role : Admin</div>
+            </div>
+        </div>
+
+        <div class="admin-title">CHATTYCHAT</div>
+
+        <div class="header-menu">
+            <a href="/admin/users">Retour</a>
+            <a href="/admin/logout">Déconnexion</a>
+            <button>Mes Infos</button>
+        </div>
+    </header>
+
+    <main class="content">
+
+        <div class="details-box">
+
+            <h1>Détails utilisateur</h1>
+
+            <p>
+                <strong>Nom :</strong>
+                <span th:text="${user.nom}"></span>
+            </p>
+
+            <p>
+                <strong>Prénom :</strong>
+                <span th:text="${user.prenom}"></span>
+            </p>
+
+            <p>
+                <strong>Email :</strong>
+                <span th:text="${user.email}"></span>
+            </p>
+
+            <p>
+                <strong>Statut :</strong>
+                <span th:text="${user.actif ? 'Activé' : 'Désactivé'}"></span>
+            </p>
+
+            <p>
+                <strong>Admin :</strong>
+                <span th:text="${user.admin ? 'Oui' : 'Non'}"></span>
+            </p>
+
+        </div>
+
+        <h2>Chats créés par cet utilisateur</h2>
+
+		<div th:if="${#lists.isEmpty(chats)}">
+		    Aucun chat créé par cet utilisateur.
+		</div>
+		
+		<table th:if="${!#lists.isEmpty(chats)}" class="chat-table">
+		    <tr>
+		        <th>Titre</th>
+		        <th>Description</th>
+		        <th>Date début</th>
+		        <th>Statut</th>
+		    </tr>
+		    <tr th:each="chat : ${chats}">
+		        <td th:text="${chat.titre}"></td>
+		        <td th:text="${chat.description}"></td>
+		        <td th:text="${#temporals.format(chat.dateCreation, 'dd/MM/yyyy HH:mm')}"></td>
+		        <td th:text="${chat.valable ? 'Valable' : 'Expiré'}"></td>
+		    </tr>
+		</table>
+        
+		<h2>Invitations reçues</h2>
+		
+		<div th:if="${#lists.isEmpty(invitations)}">
+		    Aucune invitation reçue par cet utilisateur.
+		</div>
+
+		<table th:if="${!#lists.isEmpty(invitations)}" class="chat-table">
+		    <tr>
+		        <th>Chat</th>
+		        <th>Description</th>
+		        <th>Date</th>
+		        <th>Statut</th>
+		    </tr>
+		
+		    <tr th:each="invitation : ${invitations}">
+		        <td th:text="${invitation.chat.titre}"></td>
+		        <td th:text="${invitation.chat.description}"></td>
+		        <td th:text="${invitation.chat.dateCreation}"></td>
+		        <td th:text="${invitation.statut}"></td>
+		    </tr>
+		</table>
+    </main>
+
+</div>
+
+</body>
+</html>

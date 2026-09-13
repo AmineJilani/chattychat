@@ -1,0 +1,138 @@
+<!-- chats.html -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Chats</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body>
+
+<div class="admin-page">
+
+    <header class="admin-header">
+        <div class="admin-profile">
+            <div class="avatar"></div>
+            <div>
+                <div class="profile-name"
+                     th:text="${adminUser.nom + ' ' + adminUser.prenom}">
+                    Admin Name
+                </div>
+                <div class="profile-role">Role : Admin</div>
+            </div>
+        </div>
+
+        <div class="admin-title">CHATTYCHAT</div>
+
+        <div class="header-menu">
+            <a href="/admin">Accueil</a>
+            <a href="/admin/chats/new">Créer chat</a>
+            <a href="/admin/infos">Mes Infos</a>
+            <a href="/admin/logout">Déconnexion</a>
+        </div>
+    </header>
+
+    <div class="admin-layout">
+
+        <aside class="sidebar">
+            <h2>Filtrer</h2>
+
+            <div class="filter-section">
+                <h3>Statut</h3>
+
+                <button type="button"
+                        data-filter-chat="all"
+                        onclick="filterChats('all')">
+                    Tous
+                </button>
+
+                <button type="button"
+                        data-filter-chat="valid"
+                        onclick="filterChats('valid')">
+                    Valables
+                </button>
+
+                <button type="button"
+                        data-filter-chat="expired"
+                        onclick="filterChats('expired')">
+                    Expirés
+                </button>
+            </div>
+        </aside>
+
+        <main class="content">
+
+            <h1>Liste des chats</h1>
+
+            <input
+                class="search-bar"
+                type="text"
+                id="searchChatInput"
+                placeholder="Rechercher par titre...">
+
+            <div class="chat-card"
+                 th:each="chat : ${chats}"
+                 th:attr="data-status=${chat.valable ? 'valid' : 'expired'}">
+
+                <div class="chat-info">
+
+                    <h2 th:text="${chat.titre}"></h2>
+
+                    <p th:text="${chat.description}"></p>
+
+                    <p>
+                        <strong>Début :</strong>
+                        <span th:text="${#temporals.format(chat.dateCreation, 'dd/MM/yyyy HH:mm')}"></span>
+                    </p>
+
+                    <p>
+                        <strong>Expiration :</strong>
+                        <span th:text="${#temporals.format(chat.dateExpiration, 'dd/MM/yyyy HH:mm')}"></span>
+                    </p>
+
+                    <p>
+                        <strong>Statut :</strong>
+                        <span th:class="${chat.valable ? 'status-valid' : 'status-expired'}"
+                              th:text="${chat.valable ? 'Valable' : 'Expiré'}">
+                        </span>
+                    </p>
+
+                    <p>
+                        <strong>Propriétaire :</strong>
+                        <span th:text="${chat.proprietaire != null ? chat.proprietaire.nom + ' ' + chat.proprietaire.prenom : 'Aucun propriétaire'}"></span>
+                    </p>
+
+                </div>
+
+                <div class="chat-actions">
+
+                    <a class="btn"
+                       th:href="@{/admin/chats/{id}/invitations(id=${chat.id})}">
+                        Invitations
+                    </a>
+
+                    <a class="btn"
+                       th:href="@{/admin/chats/edit/{id}(id=${chat.id})}">
+                        Modifier
+                    </a>
+
+                    <a class="btn btn-danger"
+                       th:href="@{/admin/chats/delete/{id}(id=${chat.id})}"
+                       onclick="return confirm('Supprimer ce chat ?')">
+                        Supprimer
+                    </a>
+
+                </div>
+
+            </div>
+
+        </main>
+
+    </div>
+
+</div>
+<script th:src="@{/js/FilterChat.js}"></script>
+</body>
+</html>

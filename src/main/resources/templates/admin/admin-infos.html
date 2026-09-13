@@ -1,0 +1,80 @@
+<!-- admin-infos -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Mes informations</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body>
+
+<div class="admin-page">
+
+    <header class="admin-header">
+
+        <div class="admin-profile">
+            <div class="avatar"></div>
+            <div>
+                <div class="profile-name"
+                     th:text="${adminUser.nom + ' ' + adminUser.prenom}">
+                </div>
+
+                <div class="profile-role">
+                    Admin
+                </div>
+            </div>
+        </div>
+
+        <div class="admin-title">
+            CHATTYCHAT
+        </div>
+
+        <div class="header-menu">
+            <a href="/admin">Accueil</a>
+            <a href="/admin/users">Utilisateurs</a>
+            <a href="/admin/logout">Déconnexion</a>
+        </div>
+
+    </header>
+
+    <main class="content">
+
+        <div class="details-box">
+
+            <h1>Mes informations</h1>
+
+            <p>
+                <strong>Nom :</strong>
+                <span th:text="${adminUser.nom}"></span>
+            </p>
+
+            <p>
+                <strong>Prénom :</strong>
+                <span th:text="${adminUser.prenom}"></span>
+            </p>
+
+            <p>
+                <strong>Email :</strong>
+                <span th:text="${adminUser.email}"></span>
+            </p>
+
+            <p>
+                <strong>Statut :</strong>
+                <span th:text="${adminUser.actif ? 'Activé' : 'Désactivé'}"></span>
+            </p>
+
+            <p>
+                <strong>Rôle :</strong>
+                Administrateur
+            </p>
+
+        </div>
+
+    </main>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,76 @@
+<!-- home.html -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Accueil Admin</title>
+
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body>
+
+<div class="admin-page">
+    <!-- HEADER -->
+    <header class="admin-header">
+
+        <div class="admin-profile">
+
+            <div class="avatar"></div>
+            <div class="profile-name"
+			     th:text="${adminUser.nom + ' ' + adminUser.prenom}">
+			</div>
+
+        </div>
+
+        <div class="admin-title">
+            CHATTYCHAT
+        </div>
+
+        <div class="header-menu">
+            <a href="/admin/infos"> Mes infos</a>
+            <a href="/admin/logout">Déconnexion</a>
+        </div>
+
+    </header>
+
+    <!-- MAIN -->
+    <div class="home-container">
+
+        <div class="home-card">
+
+            <h1>Bienvenue dans l’espace administration</h1>
+            <p>
+                Gérez les utilisateurs, les comptes désactivés,
+                les salons de discussion et les informations
+                administrateur de la plateforme CHATTYCHAT.
+            </p>
+
+            <div class="home-buttons">
+                <a class="home-btn"
+                   href="/admin/users/new">
+                    Ajouter un utilisateur
+                </a>
+                <a class="home-btn"
+                   href="/admin/users">
+                    Voir les utilisateurs
+                </a>
+                <a class="home-btn"
+                   href="/admin/disabled">
+                    Comptes désactivés
+                </a>
+                <a class="home-btn" href="/admin/chats">Gestion des chats</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="admin-footer">
+        SR03 - Application de salon de discussion
+    </footer>
+
+</div>
+
+</body>
+</html>
